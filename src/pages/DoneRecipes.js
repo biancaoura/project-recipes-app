@@ -38,7 +38,7 @@ export default function DoneRecipes() {
   }, [doneRecipes, filter]);
 
   const handleShareButton = (type, id) => {
-    const path = `http://localhost:3000/${type}s/${id}`;
+    const path = `https://biancaoura.github.io/project-trivia-react-redux/#/${type}s/${id}`;
     copy(path);
     setCopyMessage({ [id]: 'Link copied!' });
     setModalDisplay({ display: 'block' });
