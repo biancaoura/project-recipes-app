@@ -25,7 +25,7 @@ export default function Button() {
     const inProgressRecipesStorage = readInProgress();
     setInProgress(inProgressRecipesStorage);
   }, []);
-  
+
   const handleShareButton = () => {
     const pathNa = `https://biancaoura.github.io/project-trivia-react-redux/#/${pathname}`;
     const regex = pathNa.replace(/\/in-progress+$/g, '');
