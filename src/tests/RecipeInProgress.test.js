@@ -2,7 +2,8 @@ import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { act } from 'react-dom/test-utils';
 import renderWithRouter from './helpers/renderwithRouter';
-import { mockMealDetail, mockDrinkDetail } from './helpers/mockAPI';
+import mockDrinks from './helpers/mockDrinks';
+import mockMeals from './helpers/mockMeals';
 import App from '../App';
 
 describe('Testing loading message', () => {
@@ -25,7 +26,7 @@ describe('Testing MealProgress component', () => {
   beforeEach(async () => {
     jest.spyOn(global, 'fetch');
     global.fetch = jest.fn(() => Promise.resolve({
-      json: () => Promise.resolve(mockMealDetail),
+      json: () => Promise.resolve(mockMeals),
     }));
 
     await act(async () => renderWithRouter(<App />, '/meals/53060'));
@@ -87,7 +88,7 @@ describe('Testing DrinkProgress component', () => {
   beforeEach(async () => {
     jest.spyOn(global, 'fetch');
     global.fetch = jest.fn(() => Promise.resolve({
-      json: () => Promise.resolve(mockDrinkDetail),
+      json: () => Promise.resolve(mockDrinks),
     }));
 
     await act(async () => renderWithRouter(<App />, '/drinks/13501'));
