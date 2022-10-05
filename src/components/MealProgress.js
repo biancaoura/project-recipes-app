@@ -83,6 +83,10 @@ export default function MealProgress() {
     history.push('/done-recipes');
   };
 
+  const crossLine = (el) => (check.includes(el)
+    ? { textDecorationLine: 'line-through' }
+    : { textDecorationLine: 'none' });
+
   if (meals.length === 0) return <Loading />;
   return (
     <div className="recipe-details-container">
@@ -115,6 +119,7 @@ export default function MealProgress() {
                 data-testid={ `${index}-ingredient-step` }
                 htmlFor={ `meals${index}` }
                 key={ index }
+                style={ crossLine(el) }
               >
                 <input
                   checked={ check.includes(el) }
@@ -123,7 +128,9 @@ export default function MealProgress() {
                   onChange={ handleCheck }
                   type="checkbox"
                 />
-                <div className="new-checkbox" />
+                <div
+                  className="new-checkbox"
+                />
                 {el}
               </label>
             ))

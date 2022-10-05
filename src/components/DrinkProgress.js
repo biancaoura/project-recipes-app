@@ -83,6 +83,10 @@ export default function DrinkProgress() {
     history.push('/done-recipes');
   };
 
+  const crossLine = (el) => (check.includes(el)
+    ? { textDecorationLine: 'line-through' }
+    : { textDecorationLine: 'none' });
+
   if (drinks.length === 0) return <Loading />;
   return (
     <div className="recipe-details-container">
@@ -115,6 +119,7 @@ export default function DrinkProgress() {
                 data-testid={ `${index}-ingredient-step` }
                 htmlFor={ `drink${index}` }
                 key={ index }
+                style={ crossLine(el) }
               >
                 <input
                   checked={ check.includes(el) }
