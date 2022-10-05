@@ -1,9 +1,9 @@
 import { cleanup, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import beefMeals from '../../cypress/mocks/beefMeals';
-import drinkCategories from '../../cypress/mocks/drinkCategories';
+import beefMeals from './helpers/beefMeals';
+import drinkCategories from './helpers/drinkCategories';
 import App from '../App';
-import { mockCategory } from './helpers/mockAPI';
+import mealCategories from './helpers/mealCategories';
 import drinks from './helpers/mockDrinks';
 import mockMeals from './helpers/mockMeals';
 import ordinaryDrinks from './helpers/ordinaryDrinks';
@@ -23,7 +23,7 @@ describe('Test the Recipe component', () => {
     global.fetch = jest.fn().mockResolvedValueOnce({
       json: jest.fn().mockResolvedValue(mockMeals),
     }).mockResolvedValueOnce({
-      json: jest.fn().mockResolvedValue(mockCategory),
+      json: jest.fn().mockResolvedValue(mealCategories),
     }).mockResolvedValueOnce({
       json: jest.fn().mockResolvedValue(beefMeals),
     })
@@ -98,7 +98,7 @@ describe('Test the Recipe component', () => {
     global.fetch = jest.fn().mockResolvedValueOnce({
       json: jest.fn().mockResolvedValue(mockMeals),
     }).mockResolvedValueOnce({
-      json: jest.fn().mockResolvedValue(mockCategory),
+      json: jest.fn().mockResolvedValue(mealCategories),
     }).mockResolvedValueOnce({
       json: jest.fn().mockResolvedValue(beefMeals),
     })
