@@ -24,10 +24,8 @@ export default function FavoriteRecipes() {
 
   useEffect(() => {
     const localStorageFav = readRecipe('favoriteRecipes');
-    if (localStorageFav !== undefined) {
-      setFavorites(localStorageFav
-        .filter(({ type }) => (filter === 'ALL' ? true : type === filter)));
-    }
+    setFavorites(localStorageFav
+      .filter(({ type }) => (filter === 'ALL' ? true : type === filter)));
   }, [filter]);
 
   const handleShareButton = (type, id) => {
@@ -123,6 +121,7 @@ export default function FavoriteRecipes() {
                 { Object.keys(copyMessage) && (
                   <div
                     className="modal-container"
+                    data-testid="modal-container"
                     style={ modalDisplay }
                   >
                     <div className="modal-content">
