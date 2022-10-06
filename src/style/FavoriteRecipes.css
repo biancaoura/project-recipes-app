@@ -37,8 +37,9 @@
 
 .link {
   color: black;
-  margin: 1.6em 1em;
+  padding: 1.6em 1em;
   text-decoration: none;
+  width: 50%;
 }
 
 .favorite-card h2 {
