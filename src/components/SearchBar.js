@@ -77,7 +77,6 @@ export default function SearchBar() {
 
     if (result[path] === null) {
       global.alert(noRecipesFoundAlert);
-      console.log('ola');
     }
 
     return setFilteredSearch(result[path]);

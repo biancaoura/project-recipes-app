@@ -38,7 +38,9 @@ describe('Testing SearchBar component', () => {
   afterEach(() => {
     cleanup();
     jest.restoreAllMocks();
+    window.alert.mockClear();
   });
+  window.alert = jest.fn();
 
   it('1 - Should render the correct elements', () => {
     renderWithRouter(<App />, '/meals');
@@ -94,7 +96,7 @@ describe('Testing SearchBar component', () => {
 
     expect(await screen.findByTestId(CARD_NAME)).toHaveTextContent('Dal fry');
   });
-  it('4 - Should display an alert if user inputs more than 1 letter when searching for the first letter in /drinks', () => {
+  it('4 - Should display an alert if user inputs more than 1 letter when searching for the first letter in /drinks', async () => {
     jest.spyOn(global, 'fetch')
       .mockResolvedValueOnce({
         json: jest.fn().mockResolvedValue(drinks),
@@ -102,10 +104,10 @@ describe('Testing SearchBar component', () => {
       .mockResolvedValueOnce({
         json: jest.fn().mockResolvedValue(drinkCategories),
       });
-    jest.spyOn(window, 'alert').mockImplementation();
+
     renderWithRouter(<App />, '/drinks');
 
-    userEvent.click(screen.getByTestId(SEARCH_ICON_IMAGE));
+    await waitFor(() => userEvent.click(screen.getByTestId(SEARCH_ICON_IMAGE)));
 
     const firstLetterRadio = screen.getByTestId(FIRST_LETTER_DATA_TESTID);
     const searchInput = screen.getByTestId(SEARCH_INPUT_DATA_TESTID);
@@ -115,7 +117,7 @@ describe('Testing SearchBar component', () => {
 
     expect(window.alert).toHaveBeenCalled();
   });
-  it('5 - Should display an alert if user inputs more than 1 letter when searching for the first letter in /meals', () => {
+  it('5 - Should display an alert if user inputs more than 1 letter when searching for the first letter in /meals', async () => {
     jest.spyOn(global, 'fetch')
       .mockResolvedValueOnce({
         json: jest.fn().mockResolvedValue(mockMeals),
@@ -123,10 +125,10 @@ describe('Testing SearchBar component', () => {
       .mockResolvedValueOnce({
         json: jest.fn().mockResolvedValue(mealCategories),
       });
-    jest.spyOn(window, 'alert').mockImplementation();
+
     renderWithRouter(<App />, '/meals');
 
-    userEvent.click(screen.getByTestId(SEARCH_ICON_IMAGE));
+    await waitFor(() => userEvent.click(screen.getByTestId(SEARCH_ICON_IMAGE)));
 
     const firstLetterRadio = screen.getByTestId(FIRST_LETTER_DATA_TESTID);
     const searchInput = screen.getByTestId(SEARCH_INPUT_DATA_TESTID);
@@ -197,8 +199,6 @@ describe('Testing SearchBar component', () => {
   });
   it('10 - Should display an alert if no recipe is found', async () => {
     mockPromise(mockMeals, mealCategories, { meals: null });
-
-    jest.spyOn(window, 'alert').mockImplementation();
 
     renderWithRouter(<App />, '/meals');
 
