@@ -31,10 +31,8 @@ export default function DoneRecipes() {
   }, []);
 
   useEffect(() => {
-    if (doneRecipes) {
-      setRenderedItems(doneRecipes
-        .filter(({ type }) => (filter === 'ALL' ? true : type === filter)));
-    }
+    setRenderedItems(doneRecipes
+      .filter(({ type }) => (filter === 'ALL' ? true : type === filter)));
   }, [doneRecipes, filter]);
 
   const handleShareButton = (type, id) => {
@@ -152,6 +150,7 @@ export default function DoneRecipes() {
             { Object.keys(copyMessage) && (
               <div
                 className="modal-container"
+                data-testid="modal-container"
                 style={ modalDisplay }
               >
                 <div className="modal-content">
