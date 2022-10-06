@@ -62,10 +62,6 @@ export default function DrinkProgress() {
   const handleClick = () => {
     const recipeNew = recipe[path][0];
 
-    let tags;
-    if (recipeNew.strTags) {
-      tags = recipeNew.strTags.split(',');
-    }
     const doneDate = newDate();
 
     const newRecipe = {
@@ -76,7 +72,6 @@ export default function DrinkProgress() {
       name: recipeNew.strDrink,
       image: recipeNew.strDrinkThumb,
       doneDate,
-      tags,
     };
     saveRecipe('doneRecipes', newRecipe);
     removeRecipeFromInProgress(recipeNew.idDrink);
