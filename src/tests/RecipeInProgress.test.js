@@ -29,7 +29,7 @@ describe('Testing MealProgress component', () => {
       json: () => Promise.resolve(mockMeals),
     }));
 
-    await act(async () => renderWithRouter(<App />, '/meals/53060'));
+    await act(async () => renderWithRouter(<App />, '/meals/52977'));
     localStorage.clear();
   });
 
@@ -41,18 +41,18 @@ describe('Testing MealProgress component', () => {
 
     expect(startBtn).not.toBeInTheDocument();
 
-    const recipeTitle = await screen.findByRole('heading', { name: /burek/i });
+    const recipeTitle = await screen.findByRole('heading', { name: /corba/i });
     expect(recipeTitle).toBeInTheDocument();
   });
 
   it('2 - If the checkbox is checked, it should remain checked after the page is reloaded', async () => {
-    localStorage.setItem('inProgressRecipes', JSON.stringify({ 53060: ['Filo Pastry', 'Minced Beef'] }));
+    localStorage.setItem('inProgressRecipes', JSON.stringify({ 52977: ['Lentils - 1 cup ', 'Onion - 1 large'] }));
 
     const startBtn = await screen.findByRole('button', { name: /start recipe/i });
 
     userEvent.click(startBtn);
 
-    const recipeTitle = await screen.findByRole('heading', { name: /burek/i });
+    const recipeTitle = await screen.findByRole('heading', { name: /corba/i });
     expect(recipeTitle).toBeInTheDocument();
 
     const checkbox = await screen.findAllByRole('checkbox');
@@ -91,7 +91,7 @@ describe('Testing DrinkProgress component', () => {
       json: () => Promise.resolve(mockDrinks),
     }));
 
-    await act(async () => renderWithRouter(<App />, '/drinks/13501'));
+    await act(async () => renderWithRouter(<App />, '/drinks/15997'));
     localStorage.clear();
   });
 
@@ -103,18 +103,18 @@ describe('Testing DrinkProgress component', () => {
 
     expect(startBtn).not.toBeInTheDocument();
 
-    const recipeTitle = await screen.findByRole('heading', { name: /abc/i });
+    const recipeTitle = await screen.findByRole('heading', { name: /gg/i });
     expect(recipeTitle).toBeInTheDocument();
   });
 
   it('2 - If the checkbox is checked, it should remain checked after the page is reloaded', async () => {
-    localStorage.setItem('inProgressRecipes', JSON.stringify({ 13501: ['Amaretto', 'Baileys irish cream'] }));
+    localStorage.setItem('inProgressRecipes', JSON.stringify({ 15997: ['Galliano - 2 1/2 shots ', 'Ginger ale'] }));
 
     const startBtn = await screen.findByRole('button', { name: /start recipe/i });
 
     userEvent.click(startBtn);
 
-    const recipeTitle = await screen.findByRole('heading', { name: /abc/i });
+    const recipeTitle = await screen.findByRole('heading', { name: /gg/i });
     expect(recipeTitle).toBeInTheDocument();
 
     const checkbox = await screen.findAllByRole('checkbox');
