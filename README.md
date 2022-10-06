@@ -128,7 +128,7 @@
 
 - The CocktailDB API - `https://www.thecocktaildb.com/api.php`
 
-[Check it out!](https://github.com/biancaoura/project-recipes-app)
+[Check it out!](https://biancaoura.github.io/project-recipes-app)
 
 ##
 
