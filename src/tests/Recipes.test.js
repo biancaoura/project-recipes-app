@@ -1,4 +1,4 @@
-import { cleanup, screen } from '@testing-library/react';
+import { cleanup, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import beefMeals from './helpers/beefMeals';
 import drinkCategories from './helpers/drinkCategories';
@@ -9,16 +9,28 @@ import mockMeals from './helpers/mockMeals';
 import ordinaryDrinks from './helpers/ordinaryDrinks';
 import renderWithRouter from './helpers/renderwithRouter';
 
-describe('Test the Recipe component', () => {
-  const EMAIL_TESTID = 'email-input';
-  const PASSWORD_TESTID = 'password-input';
-  const BUTTON_TESTID = 'login-submit-btn';
-  const CARD_TESTID = '0-card-img';
-  const BEEF_AND_MUSTARD = 'Beef and Mustard Pie';
+const mockPromise = (type, catList, catRecipes) => {
+  jest.spyOn(global, 'fetch');
+  global.fetch = jest.fn().mockResolvedValueOnce({
+    json: jest.fn().mockResolvedValue(type),
+  }).mockResolvedValueOnce({
+    json: jest.fn().mockResolvedValue(catList),
+  }).mockResolvedValueOnce({
+    json: jest.fn().mockResolvedValue(catRecipes),
+  })
+    .mockResolvedValueOnce({
+      json: jest.fn().mockResolvedValue(type),
+    });
+};
 
+const CARD_TESTID = '0-card-img';
+const BEEF_AND_MUSTARD = 'Beef and Mustard Pie';
+const BEEF_CATEGORY_BTN = /beef-category-filter/i;
+
+describe('Test the Recipe component', () => {
   afterEach(() => cleanup());
 
-  it('Should render 12 meals recipe as the page loads', async () => {
+  it('1 - Should render 12 meals recipe as the page loads', async () => {
     jest.spyOn(global, 'fetch');
     global.fetch = jest.fn().mockResolvedValueOnce({
       json: jest.fn().mockResolvedValue(mockMeals),
@@ -37,116 +49,72 @@ describe('Test the Recipe component', () => {
         json: jest.fn().mockResolvedValue(mockMeals),
       });
 
-    renderWithRouter(<App />);
-
-    userEvent.type(screen.getByTestId(EMAIL_TESTID), 'email@email.com');
-    userEvent.type(screen.getByTestId(PASSWORD_TESTID), '1234567');
-    userEvent.click(screen.getByTestId(BUTTON_TESTID));
-
-    expect(screen.getByRole('heading', { name: /meals/i, level: 1 })).toBeInTheDocument();
+    renderWithRouter(<App />, '/meals');
 
     expect(await screen.findAllByTestId(/recipe-card/)).toHaveLength(12);
 
-    userEvent.click(screen.getByRole('button', { name: 'Beef' }));
+    await waitFor(() => userEvent.click(screen.getByTestId(BEEF_CATEGORY_BTN)));
 
     expect(await screen.findByTestId(CARD_TESTID))
       .toHaveAttribute('alt', BEEF_AND_MUSTARD);
 
-    userEvent.click(screen.getByRole('button', { name: 'ALL' }));
+    await waitFor(() => userEvent.click(screen.getByTestId(/all-category-filter/i)));
 
     expect(await screen.findByTestId(CARD_TESTID))
       .toHaveAttribute('alt', 'Corba');
 
-    userEvent.click(screen.getByRole('button', { name: 'Beef' }));
+    await waitFor(() => userEvent.click(screen.getByTestId(BEEF_CATEGORY_BTN)));
 
     expect(await screen.findByTestId(CARD_TESTID))
       .toHaveAttribute('alt', BEEF_AND_MUSTARD);
-
-    userEvent.click(screen.getByRole('button', { name: 'Beef' }));
   });
-  it('Should render 12 drinks as the page loads', async () => {
-    jest.spyOn(global, 'fetch');
-    global.fetch = jest.fn().mockResolvedValueOnce({
-      json: jest.fn().mockResolvedValue(drinks),
-    }).mockResolvedValueOnce({
-      json: jest.fn().mockResolvedValue(drinkCategories),
-    }).mockResolvedValueOnce({
-      json: jest.fn().mockResolvedValue(ordinaryDrinks),
-    })
-      .mockResolvedValueOnce({
-        json: jest.fn().mockResolvedValue(drinks),
-      });
+  it('2 - Should render 12 drinks as the page loads', async () => {
+    mockPromise(drinks, drinkCategories, ordinaryDrinks);
 
     renderWithRouter(<App />, '/drinks');
 
-    expect(screen.getByRole('heading', { name: /drinks/i, level: 1 })).toBeInTheDocument();
-
     expect(await screen.findAllByTestId(/recipe-card/i)).toHaveLength(12);
 
-    userEvent.click(screen.getByRole('button', { name: /Ordinary drink/i }));
+    await waitFor(() => userEvent.click(screen.getByRole('button', { name: /Ordinary drink/i })));
 
     expect(await screen.findByTestId(CARD_TESTID))
       .toHaveAttribute('alt', '3-Mile Long Island Iced Tea');
 
-    userEvent.click(screen.getByRole('button', { name: /Ordinary drink/i }));
+    await waitFor(() => userEvent.click(screen.getByRole('button', { name: /Ordinary drink/i })));
 
     expect(await screen.findByTestId(CARD_TESTID))
       .toHaveAttribute('alt', 'GG');
   });
-  test('The ALL button in the meals page', async () => {
-    jest.spyOn(global, 'fetch');
-    global.fetch = jest.fn().mockResolvedValueOnce({
-      json: jest.fn().mockResolvedValue(mockMeals),
-    }).mockResolvedValueOnce({
-      json: jest.fn().mockResolvedValue(mealCategories),
-    }).mockResolvedValueOnce({
-      json: jest.fn().mockResolvedValue(beefMeals),
-    })
-      .mockResolvedValueOnce({
-        json: jest.fn().mockResolvedValue(mockMeals),
-      });
+  test('3 - Clicking the "All" button should render the correct recipes in /meals', async () => {
+    mockPromise(mockMeals, mealCategories, beefMeals);
 
     renderWithRouter(<App />, '/meals');
 
-    expect(screen.getByRole('heading', { name: /meals/i, level: 1 })).toBeInTheDocument();
-
     expect(await screen.findAllByTestId(/recipe-card/)).toHaveLength(12);
 
-    userEvent.click(screen.getByRole('button', { name: 'Beef' }));
+    await waitFor(() => userEvent.click(screen.getByTestId(BEEF_CATEGORY_BTN)));
 
     expect(await screen.findByTestId(CARD_TESTID))
       .toHaveAttribute('alt', BEEF_AND_MUSTARD);
 
-    userEvent.click(screen.getByRole('button', { name: 'ALL' }));
+    await waitFor(() => userEvent.click(screen.getByTestId(/all-category-filter/i)));
 
     expect(await screen.findByTestId(CARD_TESTID))
       .toHaveAttribute('alt', 'Corba');
   });
-  test('The ALL button in the drinks page', async () => {
-    jest.spyOn(global, 'fetch');
-    global.fetch = jest.fn().mockResolvedValueOnce({
-      json: jest.fn().mockResolvedValue(drinks),
-    }).mockResolvedValueOnce({
-      json: jest.fn().mockResolvedValue(drinkCategories),
-    }).mockResolvedValueOnce({
-      json: jest.fn().mockResolvedValue(ordinaryDrinks),
-    })
-      .mockResolvedValueOnce({
-        json: jest.fn().mockResolvedValue(drinks),
-      });
+  it('4 - Clicking the "All" button should render the correct recipes in /drinks', async () => {
+    mockPromise(drinks, drinkCategories, ordinaryDrinks);
 
     renderWithRouter(<App />, '/drinks');
 
-    expect(screen.getByRole('heading', { name: /drinks/i, level: 1 })).toBeInTheDocument();
-
     expect(await screen.findAllByTestId(/recipe-card/)).toHaveLength(12);
 
-    userEvent.click(screen.getByRole('button', { name: 'Ordinary Drink' }));
+    await waitFor(() => userEvent.click(screen.getByTestId(/ordinary drink-category-filter/i)));
 
     expect(await screen.findByTestId(CARD_TESTID))
       .toHaveAttribute('alt', '3-Mile Long Island Iced Tea');
 
-    userEvent.click(screen.getByRole('button', { name: 'ALL' }));
+    await waitFor(() => userEvent.click(screen.getByTestId(/all-category-filter/i)));
 
     expect(await screen.findByTestId(CARD_TESTID))
       .toHaveAttribute('alt', 'GG');
