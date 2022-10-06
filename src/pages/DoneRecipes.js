@@ -167,15 +167,14 @@ export default function DoneRecipes() {
               </div>
             )}
             <div className="done-tag-container">
-              { el.tags ? el.tags.map((tag) => (
+              { el.tags && el.tags.map((tag) => (
                 <p
                   className="done-tag"
-                  data-testid={ `${index}-${tag}-horizontal-tag` }
                   key={ tag }
                 >
                   {tag.toLowerCase()}
                 </p>
-              )) : ''}
+              ))}
             </div>
           </div>
         ))

@@ -99,7 +99,7 @@ export default function DrinkProgress() {
         <div className="recipe-image-bg" />
         <h1 data-testid="recipe-title">{ drinks[0].strDrink.toUpperCase() }</h1>
         <div className="recipe-category-container">
-          <Link to={ `/drinks/${drinks[0].idDrink}` } style={ { width: '40px' } }>
+          <Link to={ `/drinks/${drinks[0].idDrink}` }>
             <img
               src={ setCategoryIcon(drinks[0].strCategory) }
               alt={ `${drinks[0].strCategory} category logo` }

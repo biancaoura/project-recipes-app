@@ -6,6 +6,13 @@ import mockDrinks from './helpers/mockDrinks';
 import mockMeals from './helpers/mockMeals';
 import App from '../App';
 
+const mockPromise = (mock) => {
+  jest.spyOn(global, 'fetch');
+  global.fetch = jest.fn(() => Promise.resolve({
+    json: () => Promise.resolve(mock),
+  }));
+};
+
 describe('Testing loading message', () => {
   it('1 - Should render loading message in InProgress(meals) component', () => {
     renderWithRouter(<App />, '/meals/53060/in-progress');
@@ -24,10 +31,7 @@ describe('Testing loading message', () => {
 
 describe('Testing MealProgress component', () => {
   beforeEach(async () => {
-    jest.spyOn(global, 'fetch');
-    global.fetch = jest.fn(() => Promise.resolve({
-      json: () => Promise.resolve(mockMeals),
-    }));
+    mockPromise(mockMeals);
 
     await act(async () => renderWithRouter(<App />, '/meals/52977'));
     localStorage.clear();
@@ -86,10 +90,7 @@ describe('Testing MealProgress component', () => {
 
 describe('Testing DrinkProgress component', () => {
   beforeEach(async () => {
-    jest.spyOn(global, 'fetch');
-    global.fetch = jest.fn(() => Promise.resolve({
-      json: () => Promise.resolve(mockDrinks),
-    }));
+    mockPromise(mockDrinks);
 
     await act(async () => renderWithRouter(<App />, '/drinks/15997'));
     localStorage.clear();
@@ -145,5 +146,54 @@ describe('Testing DrinkProgress component', () => {
     window.location.reload();
 
     expect(checkbox[0]).not.toBeChecked();
+  });
+});
+
+describe('Testing saved recipes', () => {
+  beforeEach(() => localStorage.clear());
+
+  it('1 - If finishing a meal recipe, renders in /done-recipes', async () => {
+    mockPromise(mockMeals);
+    const { history } = renderWithRouter(<App />, '/meals/52977/in-progress');
+
+    const allCheckboxes = await screen.findAllByRole('checkbox');
+
+    allCheckboxes.forEach((checkbox) => {
+      userEvent.click(checkbox);
+    });
+
+    const finishBtn = await screen.findByRole('button', { name: /finish recipe/i });
+
+    userEvent.click(finishBtn);
+
+    const { location: { pathname } } = history;
+    expect(pathname).toBe('/done-recipes');
+
+    const mealTitle = await screen.findByText(/corba/i);
+    const mealTag = await screen.findByText(/soup/i);
+
+    expect(mealTitle).toBeInTheDocument();
+    expect(mealTag).toBeInTheDocument();
+  });
+
+  it('2 - If finishing a drink recipe, renders in /done-recipes', async () => {
+    mockPromise(mockDrinks);
+    const { history } = renderWithRouter(<App />, '/drinks/15997/in-progress');
+
+    const allCheckboxes = await screen.findAllByRole('checkbox');
+
+    allCheckboxes.forEach((checkbox) => {
+      userEvent.click(checkbox);
+    });
+
+    const finishBtn = await screen.findByRole('button', { name: /finish recipe/i });
+
+    userEvent.click(finishBtn);
+
+    const { location: { pathname } } = history;
+    expect(pathname).toBe('/done-recipes');
+
+    const drinkTitle = await screen.findByText(/gg/i);
+    expect(drinkTitle).toBeInTheDocument();
   });
 });

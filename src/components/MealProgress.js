@@ -37,7 +37,8 @@ export default function MealProgress() {
       const renderMeasurement = data.filter((el) => el[0].includes('strMeasure'))
         .map((i) => i[1]);
       setRenderedItems(renderIngredients
-        .map((el, i) => (renderMeasurement[i] === undefined ? el[1]
+        .map((el, i) => (renderMeasurement[i] === undefined
+          ? el[1]
           : `${el[1]} - ${renderMeasurement[i]}`)));
       setLoading(false);
     }
