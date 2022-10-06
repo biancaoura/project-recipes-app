@@ -126,19 +126,16 @@ export default function DoneRecipes() {
                   : `${el.alcoholicOrNot} - ${el.category}` }
               </h5>
             </Link>
-            <p
-              className="done-date"
-              data-testid={ `${index}-horizontal-done-date` }
-            >
-              { `Done in: ${el.doneDate}` }
-
-            </p>
-            <p
-              className="done-date done-times"
-            >
-              { `Done ${handleDones(el.id)} time(s)` }
-
-            </p>
+            <div className="done-info-container">
+              <p
+                data-testid={ `${index}-horizontal-done-date` }
+              >
+                { `Done in: ${el.doneDate}` }
+              </p>
+              <p>
+                { `Done ${handleDones(el.id)} time(s)` }
+              </p>
+            </div>
             <button
               className="button-icon"
               data-testid={ `${index}-horizontal-share-btn` }
