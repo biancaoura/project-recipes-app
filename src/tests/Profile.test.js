@@ -3,34 +3,39 @@ import userEvent from '@testing-library/user-event';
 import App from '../App';
 import renderWithRouter from './helpers/renderwithRouter';
 
-describe('testa a page profile', () => {
+describe('Testing Profile page', () => {
+  let renderHistory;
+
   beforeEach(() => {
-    localStorage.setItem('user', JSON.stringify({ email: 'teste@teste.com' }));
-    renderWithRouter(<App />, '/profile');
+    localStorage.setItem('user', JSON.stringify({ email: 'test@test.com' }));
+    const { history } = renderWithRouter(<App />, '/profile');
+    renderHistory = history;
   });
-  it('testa se quando done recipes é clicado redireciona o componente doneRecipes', () => {
-    const profile = screen.getByRole('heading', { level: 1, name: /Profile/i });
-    expect(profile).toBeInTheDocument();
-    const doneRecipesButton = screen.getByRole('button', { name: /Done Recipes/i });
-    expect(doneRecipesButton).toBeInTheDocument();
-    userEvent.click(doneRecipesButton);
-    const doneRecipesH1 = screen.getByRole('heading', { level: 1, name: /Done Recipes/i });
-    expect(doneRecipesH1).toBeInTheDocument();
+
+  it('1 - Should go to /done-recipes when clicking the button', () => {
+    const doneRecipesBtn = screen.getByTestId(/profile-done-btn/);
+
+    userEvent.click(doneRecipesBtn);
+
+    const { location: { pathname } } = renderHistory;
+    expect(pathname).toBe('/done-recipes');
   });
-  it('testa se quando done recipes é clicado redireciona o componente favoriteRecipes', () => {
-    const profile = screen.getByRole('heading', { level: 1, name: /Profile/i });
-    expect(profile).toBeInTheDocument();
-    const favoriteRecipesButton = screen.getByRole('button', { name: /favorite Recipes/i });
-    expect(favoriteRecipesButton).toBeInTheDocument();
-    userEvent.click(favoriteRecipesButton);
-    const favoriteRecipesH1 = screen.getByRole('heading', { level: 1, name: /favorite Recipes/i });
-    expect(favoriteRecipesH1).toBeInTheDocument();
+
+  it('2 - Should go to /favorite-recipes when clicking the button', () => {
+    const favoriteRecipesBtn = screen.getByTestId(/profile-favorite-btn/);
+
+    userEvent.click(favoriteRecipesBtn);
+
+    const { location: { pathname } } = renderHistory;
+    expect(pathname).toBe('/favorite-recipes');
   });
-  it('testa se o botão de logout ao ser clicado volta pra home e limpa o localStorage', () => {
-    const logoutButton = screen.getByRole('button', { name: /Logout/i });
-    expect(logoutButton).toBeInTheDocument();
-    userEvent.click(logoutButton);
-    const userInputs = screen.getAllByRole('textbox');
-    expect(userInputs).toHaveLength(2);
+
+  it('3 - Should go to the homepage when logging out', () => {
+    const logoutBtn = screen.getByTestId(/profile-logout-btn/);
+
+    userEvent.click(logoutBtn);
+
+    const { location: { pathname } } = renderHistory;
+    expect(pathname).toBe('/');
   });
 });
