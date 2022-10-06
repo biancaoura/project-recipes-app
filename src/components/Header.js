@@ -22,8 +22,6 @@ export default function Header() {
 
   const defineLogo = (props) => {
     switch (props) {
-    case '/meals':
-      return mealsIcon;
     case '/drinks':
       return drinksIcon;
     case '/profile':
@@ -33,7 +31,7 @@ export default function Header() {
     case FAVORITE_RECIPES:
       return favoriteLogo;
     default:
-      return 'Header';
+      return mealsIcon;
     }
   };
 
@@ -45,6 +43,7 @@ export default function Header() {
         <div className="header-logo-container">
           <button
             className="header-button"
+            data-testid="header-button"
             onClick={ () => history.push('/meals') }
             type="button"
           >

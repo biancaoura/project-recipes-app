@@ -31,4 +31,14 @@ describe('Testing Header component', () => {
     const favoriteRecipesLogo = screen.getByAltText(/favorite-recipes/i);
     expect(favoriteRecipesLogo).toBeInTheDocument();
   });
+
+  it('3 - Should go to /meals when clicking on the logo', () => {
+    renderHistory.push('/drinks');
+
+    const logoBtn = screen.getByTestId(/header-button/);
+
+    userEvent.click(logoBtn);
+
+    expect(renderHistory.location.pathname).toBe('/meals');
+  });
 });
