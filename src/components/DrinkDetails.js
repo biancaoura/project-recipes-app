@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import RecipesContext from '../context/RecipesContext';
 import Button from './Button';
 import MealRecommendations from './MealRecommendations';
-// import Loading from './Loading';
 import { setCategoryIcon } from '../helpers/categoriesIcons';
 
 export default function DrinkDetails() {

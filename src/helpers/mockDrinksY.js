@@ -1,5 +1,3 @@
-// const STRING_PARTIAL = 're completely crushed.';
-
 const drinksSearchedY = {
   drinks: [
     {
