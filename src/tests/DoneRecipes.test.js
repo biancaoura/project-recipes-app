@@ -29,6 +29,12 @@ const mockDoneRecipes = [
   },
 ];
 
+Object.assign(navigator, {
+  clipboard: {
+    writeText: () => {},
+  },
+});
+
 const SPICY_ARRABIATA = 'Spicy Arrabiata';
 
 describe('Test the Done Recipes page', () => {
@@ -63,12 +69,14 @@ describe('Test the Done Recipes page', () => {
   it('2 - Should copy the correct link to clipboard when clicking the share button', async () => {
     const shareBtn = await screen.findByTestId('0-horizontal-share-btn');
 
-    window.document.execCommand = jest.fn(() => true);
+    jest.spyOn(navigator.clipboard, 'writeText');
+
     userEvent.click(shareBtn);
 
     const message = await screen.findAllByText(/link copied!/i);
     const modal = await screen.findAllByTestId(/modal-container/);
 
+    expect(navigator.clipboard.writeText).toHaveBeenCalled();
     expect(message[0]).toBeInTheDocument();
     expect(modal[0]).toHaveStyle('display: block');
 

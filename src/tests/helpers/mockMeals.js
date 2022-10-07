@@ -107,7 +107,7 @@ const mockMeals = {
       strMeasure18: ' ',
       strMeasure19: ' ',
       strMeasure20: ' ',
-      strSource: 'http://www.turkeysforlife.com/2013/10/firinda-kumpir-turkish-street-food.html',
+      strSource: 'https://www.turkeysforlife.com/2013/10/firinda-kumpir-turkish-street-food.html',
       dateModified: null,
     },
     {
@@ -213,7 +213,7 @@ const mockMeals = {
       strMeasure18: '',
       strMeasure19: '',
       strMeasure20: '',
-      strSource: 'http://www.food.com/recipe/real-canadian-poutine-113388',
+      strSource: 'https://www.food.com/recipe/real-canadian-poutine-113388',
       dateModified: null,
     },
     {
@@ -319,7 +319,7 @@ const mockMeals = {
       strMeasure18: '',
       strMeasure19: '',
       strMeasure20: '',
-      strSource: 'http://www.geniuskitchen.com/recipe/drop-doughnuts-133877',
+      strSource: 'https://www.geniuskitchen.com/recipe/drop-doughnuts-133877',
       dateModified: null,
     },
     {
@@ -372,7 +372,7 @@ const mockMeals = {
       strMeasure18: '',
       strMeasure19: '',
       strMeasure20: '',
-      strSource: 'http://www.geniuskitchen.com/recipe/chinese-wontons-20235',
+      strSource: 'https://www.geniuskitchen.com/recipe/chinese-wontons-20235',
       dateModified: null,
     },
     {
@@ -425,7 +425,7 @@ const mockMeals = {
       strMeasure18: ' ',
       strMeasure19: ' ',
       strMeasure20: ' ',
-      strSource: 'http://allrecipes.co.uk/recipe/12294/kafteji--tunisian-fried-vegetables-.aspx',
+      strSource: 'https://allrecipes.co.uk/recipe/12294/kafteji--tunisian-fried-vegetables-.aspx',
       dateModified: null,
     },
     {
@@ -743,7 +743,7 @@ const mockMeals = {
       strMeasure18: '',
       strMeasure19: '',
       strMeasure20: '',
-      strSource: 'http://www.deliciousmagazine.co.uk/recipes/flamiche-flemish-leek-tart/',
+      strSource: 'https://www.deliciousmagazine.co.uk/recipes/flamiche-flemish-leek-tart/',
       dateModified: null,
     },
     {
@@ -1114,7 +1114,7 @@ const mockMeals = {
       strMeasure18: '',
       strMeasure19: '',
       strMeasure20: '',
-      strSource: 'http://allrecipes.com/recipe/213595/miraculous-canadian-sugar-pie/',
+      strSource: 'https://allrecipes.com/recipe/213595/miraculous-canadian-sugar-pie/',
       dateModified: null,
     },
     {
@@ -1273,7 +1273,7 @@ const mockMeals = {
       strMeasure18: null,
       strMeasure19: null,
       strMeasure20: null,
-      strSource: 'http://www.ottolenghi.co.uk/recipes/meat/irish-stew-shop',
+      strSource: 'https://www.ottolenghi.co.uk/recipes/meat/irish-stew-shop',
       dateModified: null,
     },
     {

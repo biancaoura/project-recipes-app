@@ -1,4 +1,4 @@
-import { screen } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { act } from 'react-dom/test-utils';
 import renderWithRouter from './helpers/renderwithRouter';
@@ -9,7 +9,14 @@ const mockPromise = Promise.resolve({
   json: () => Promise.resolve(mockAPI),
 });
 
+Object.assign(navigator, {
+  clipboard: {
+    writeText: () => {},
+  },
+});
+
 const FAVORITE_BTN = 'favorite-btn';
+const FAVORITE_RECIPES = 'favoriteRecipes';
 
 describe('Testing DrinkDetails component', () => {
   beforeEach(async () => {
@@ -78,33 +85,35 @@ describe('Testing MealDetails component', () => {
 });
 
 describe('Testing Buttons component', () => {
-  const FAVORITE_RECIPES = 'favoriteRecipes';
-
   beforeEach(async () => {
     jest.spyOn(global, 'fetch');
     global.fetch = jest.fn(() => mockPromise);
 
     await act(async () => renderWithRouter(<App />, '/meals'));
+
     const currMeal = await screen.findByText(/corba/i);
-    expect(currMeal).toBeInTheDocument();
-    userEvent.click(currMeal);
-    const startRecipeBtn = await screen.findByTestId('start-recipe-btn');
-    expect(startRecipeBtn).toBeInTheDocument();
+
+    await waitFor(() => userEvent.click(currMeal));
   });
 
   it('1 - Should render buttons', async () => {
     const shareBtn = screen.getByTestId('share-btn');
     const favoriteBtn = screen.getByTestId(FAVORITE_BTN);
+
     expect(shareBtn).toBeInTheDocument();
     expect(favoriteBtn).toBeInTheDocument();
   });
 
   it('2 - Should show "Link copied!" after clicking on share button', async () => {
-    window.document.execCommand = jest.fn(() => true);
+    jest.spyOn(navigator.clipboard, 'writeText');
+
     const shareBtn = screen.getByTestId('share-btn');
+
     userEvent.click(shareBtn);
+
     const linkMessage = await screen.findByText('Link copied!');
     expect(linkMessage).toBeInTheDocument();
+    expect(navigator.clipboard.writeText).toHaveBeenCalled();
   });
   it('1 - Should unfavorite the selected recipes', async () => {
     expect(screen.getByTestId('share-btn')).toBeInTheDocument();
@@ -121,18 +130,15 @@ describe('Testing Buttons component', () => {
 });
 
 describe('Test the Buttons inside the drinks path', () => {
-  const FAVORITE_RECIPES = 'favoriteRecipes';
-
   beforeEach(async () => {
     jest.spyOn(global, 'fetch');
     global.fetch = jest.fn(() => mockPromise);
 
     await act(async () => renderWithRouter(<App />, '/drinks'));
+
     const currDrink = await screen.findByText(/GG/i);
-    expect(currDrink).toBeInTheDocument();
-    userEvent.click(currDrink);
-    const startRecipeBtn = await screen.findByTestId('start-recipe-btn');
-    expect(startRecipeBtn).toBeInTheDocument();
+
+    await waitFor(() => userEvent.click(currDrink));
   });
   it('Should unfavorite the selected drink', () => {
     userEvent.click(screen.getByTestId(FAVORITE_BTN));

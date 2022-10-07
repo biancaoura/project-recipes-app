@@ -25,6 +25,12 @@ const favoriteRecipesMock = [
   },
 ];
 
+Object.assign(navigator, {
+  clipboard: {
+    writeText: () => {},
+  },
+});
+
 const FAVORITE_RECIPES_PATH = '/favorite-recipes';
 const FAVORITE_RECIPES = 'favoriteRecipes';
 
@@ -63,12 +69,13 @@ describe('Test the Favorite Recipes page', () => {
   it('3 - Should show "Link copied!" after clicking on share button', async () => {
     const shareBtn = await screen.findByTestId('0-horizontal-share-btn');
 
-    window.document.execCommand = jest.fn(() => true);
+    jest.spyOn(navigator.clipboard, 'writeText');
     userEvent.click(shareBtn);
 
     const message = await screen.findAllByText(/link copied!/i);
     const modal = await screen.findAllByTestId(/modal-container/);
 
+    expect(navigator.clipboard.writeText).toHaveBeenCalled();
     expect(message[0]).toBeInTheDocument();
     expect(modal[0]).toHaveStyle('display: block');
 
